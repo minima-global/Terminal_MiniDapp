@@ -145,7 +145,7 @@
 
 <body style='margin:0;'>
 <div class="container">
-	<div class="title-bar">
+	<div id="title-bar" class="title-bar" onclick="event.stopPropagation();">
 		<svg class="title-bar__icon" width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path d="M2.43948 19.6217L0 17.1822L7.18219 9.99997L0 2.81778L2.43948 0.378296L12.0619 9.99997L2.43948 19.6217Z" fill="#FF512F"/>
 			<path d="M24 16.1719H12.401V19.6217H24V16.1719Z" fill="#F6F6FF"/>
@@ -458,7 +458,7 @@
 		});
 	})();
 </script>
-
+<script src="./titlebar.js"></script>
 </body>
 
 </html>
