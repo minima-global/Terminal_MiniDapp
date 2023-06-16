@@ -170,6 +170,11 @@
 	<div class="message-container">
 		<div id="message" class="message message--hidden">Last command copied to clipboard</div>
 	</div>
+
+	<div class="controls">
+		<button disabled id="control-up" class="controls__icon"><img src="./arrow_up.svg" /></button>
+		<button disabled id="control-down" class="controls__icon"><img src="./arrow_down.svg" /></button>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -257,18 +262,28 @@
 
 <style>
 
-#logsbox {
-	border: 2px solid white;
-  	border-radius: 10px;
-  	padding:5px;
-  	z-index:1;
-  	position:absolute;
-  	top:0;
-  	right:0;
-  	color:white;
-  	margin-right:40;
-  	margin-top:20;
-  	background-color:#ff0000";
+.controls {
+	bottom: 20px;
+	right: 20px;
+	position: absolute;
+	display: flex;
+}
+
+.controls__icon {
+	cursor: pointer;
+	background: none;
+	border: 0;
+	transition: 0.2s transform;
+}
+
+.controls__icon:active {
+	transform: scale(0.90);
+	opacity: 0.9;
+}
+
+.controls__icon:disabled {
+	opacity: 0.5;
+	cursor: not-allowed !important;
 }
 
 .hidden {
@@ -285,10 +300,13 @@
 
 <script type="text/javascript">
     var ui = {
+		terminal: document.getElementById('terminal'),
         message: document.getElementById('message'),
         export: document.getElementById('export'),
         copy: document.getElementById('copy'),
-    };
+		up: document.getElementById('control-up'),
+		down: document.getElementById('control-down'),
+	};
 
 	var output = '';
 	var lastOutput = '';
@@ -324,8 +342,8 @@
 			if(SHOW_MINIMA_LOGS){
 				//Get the message
 				addText(msg.data.message+"\n");
+				ui.terminal.scrollTop = ui.terminal.scrollHeight;
 			}
-
 		}else{
 
 			//Log it..
@@ -420,6 +438,41 @@
 	document.getElementById('terminal-form').addEventListener('submit', function (evt) {
 		evt.preventDefault();
 		submit();
+	});
+
+	ui.terminal.addEventListener('scroll', function (evt) {
+		var offset = this.clientHeight;
+
+		if (this.scrollTop < 10) {
+			ui.up.disabled = true;
+		} else {
+			ui.up.disabled = false;
+		}
+
+		if (this.scrollHeight <= (this.scrollTop+offset)) {
+			ui.down.disabled = true;
+		} else {
+			ui.down.disabled = false;
+		}
+	});
+
+	let interval = null;
+	let timeout = null;
+
+	function moveUp(shift = 300) {
+		ui.terminal.scrollTop = ui.terminal.scrollTop - shift;
+	}
+
+	function moveDown(shift = 300) {
+		ui.terminal.scrollTop = ui.terminal.scrollTop + shift;
+	}
+
+	ui.up.addEventListener('click', function() {
+		moveUp();
+	});
+
+	ui.down.addEventListener('click', function() {
+		moveDown();
 	});
 
 	(function () {
