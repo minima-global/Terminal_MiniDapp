@@ -459,12 +459,12 @@
 	let interval = null;
 	let timeout = null;
 
-	function moveUp(shift = 300) {
-		ui.terminal.scrollTop = ui.terminal.scrollTop - shift;
+	function moveUp() {
+		ui.terminal.scrollTop = 0;
 	}
 
-	function moveDown(shift = 300) {
-		ui.terminal.scrollTop = ui.terminal.scrollTop + shift;
+	function moveDown() {
+		ui.terminal.scrollTop = ui.terminal.scrollHeight;
 	}
 
 	ui.up.addEventListener('click', function() {
